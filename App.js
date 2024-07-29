@@ -1,12 +1,6 @@
-import express from 'express';
-import Hello from './Hello.js';
-import Lab5 from './Lab5/index.js';
-
+import Hello from "./Hello.js";
+import Lab5 from "./Lab5/index.js";
 const app = express();
-
-Hello(app);
+app.use(express.json());
 Lab5(app);
-
-app.listen(4000, () => {
-  console.log('Server is running on port 4000');
-});
+Hello(app);

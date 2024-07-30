@@ -1,16 +1,15 @@
-import express from 'express';
-import cors from 'cors'; 
-import Hello from './Hello.js';
-import Lab5 from './Lab5/index.js';
+import express from "express";
+import Lab5 from "./Lab5/index.js";
+import CourseRoutes from "./Kanbas/Courses/routes.js";
+import cors from "cors";
 
 const app = express();
-
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); // Ensure this line is here
 
+CourseRoutes(app);
 Lab5(app);
-Hello(app);
 
-app.listen(process.env.PORT || 4000, () => {
-  console.log('Server is running on port 4000');
+app.listen(4000, () => {
+  console.log("Server is running on port 4000");
 });

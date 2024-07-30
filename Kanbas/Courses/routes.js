@@ -1,6 +1,7 @@
 import Database from "../Database/index.js";
 
 export default function CourseRoutes(app) {
+  // Get all courses
   app.get("/api/courses", (req, res) => {
     try {
       const courses = Database.courses;
@@ -11,6 +12,7 @@ export default function CourseRoutes(app) {
     }
   });
 
+  // Create a new course
   app.post("/api/courses", (req, res) => {
     try {
       const course = { ...req.body, _id: new Date().getTime().toString() };
@@ -22,10 +24,16 @@ export default function CourseRoutes(app) {
     }
   });
 
+  // Delete a course
   app.delete("/api/courses/:id", (req, res) => {
     try {
       const { id } = req.params;
-      Database.courses = Database.courses.filter((c) => c._id !== id);
+      const courseIndex = Database.courses.findIndex((course) => course._id === id);
+      if (courseIndex === -1) {
+        res.status(404).json({ message: `Unable to delete course with ID ${id}` });
+        return;
+      }
+      Database.courses.splice(courseIndex, 1);
       res.sendStatus(204);
     } catch (error) {
       console.error("Error deleting course:", error.message);
@@ -33,6 +41,7 @@ export default function CourseRoutes(app) {
     }
   });
 
+  // Update a course
   app.put("/api/courses/:id", (req, res) => {
     try {
       const { id } = req.params;
@@ -42,7 +51,7 @@ export default function CourseRoutes(app) {
         return;
       }
       Database.courses[courseIndex] = { ...Database.courses[courseIndex], ...req.body };
-      res.sendStatus(200);
+      res.sendStatus(204);
     } catch (error) {
       console.error("Error updating course:", error.message);
       res.status(500).send("Error updating course.");

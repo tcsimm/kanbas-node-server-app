@@ -25,13 +25,8 @@ export default function CourseRoutes(app) {
   app.delete("/api/courses/:id", (req, res) => {
     try {
       const { id } = req.params;
-      const courseIndex = Database.courses.findIndex((course) => course._id === id);
-      if (courseIndex === -1) {
-        res.status(404).json({ message: `Unable to delete course with ID ${id}` });
-        return;
-      }
-      Database.courses.splice(courseIndex, 1);
-      res.sendStatus(200);
+      Database.courses = Database.courses.filter((c) => c._id !== id);
+      res.sendStatus(204);
     } catch (error) {
       console.error("Error deleting course:", error.message);
       res.status(500).send("Error deleting course.");

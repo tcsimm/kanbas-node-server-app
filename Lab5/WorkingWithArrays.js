@@ -6,72 +6,76 @@ let todos = [
 ];
 
 export default function WorkingWithArrays(app) {
-  // GET route to create a new todo
   app.get("/lab5/todos/create", (req, res) => {
-    const newTodo = {
-      id: new Date().getTime(),
-      title: "New Task",
-      completed: false,
-    };
-    todos.push(newTodo);
-    res.json(todos);
+      const newTodo = {
+          id: new Date().getTime(),
+          title: "New Task",
+          completed: false,
+      };
+      todos.push(newTodo);
+      res.json(todos);
   });
 
-  // POST route to create a new todo
   app.post("/lab5/todos", (req, res) => {
-    const newTodo = { ...req.body, id: new Date().getTime() };
-    todos.push(newTodo);
-    res.json(newTodo);
+      const newTodo = { ...req.body, id: new Date().getTime() };
+      todos.push(newTodo);
+      res.json(newTodo);
   });
 
-  // GET route to get a specific todo by id
   app.get("/lab5/todos/:id", (req, res) => {
-    const { id } = req.params;
-    const todo = todos.find((t) => t.id === parseInt(id));
-    res.json(todo);
+      const { id } = req.params;
+      const todo = todos.find((t) => t.id === parseInt(id));
+      res.json(todo);
   });
 
-  // GET route to filter todos by completion status
   app.get("/lab5/todos", (req, res) => {
-    const { completed } = req.query;
-    if (completed !== undefined) {
-      const completedBool = completed === "true";
-      const completedTodos = todos.filter((t) => t.completed === completedBool);
-      res.json(completedTodos);
-      return;
-    }
-    res.json(todos);
+      const { completed } = req.query;
+      if (completed !== undefined) {
+          const completedBool = completed === "true";
+          const completedTodos = todos.filter((t) => t.completed === completedBool);
+          res.json(completedTodos);
+          return;
+      }
+      res.json(todos);
   });
 
-  // GET route to delete a todo by id
   app.get("/lab5/todos/:id/delete", (req, res) => {
-    const { id } = req.params;
-    const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
-    todos.splice(todoIndex, 1);
-    res.json(todos);
+      const { id } = req.params;
+      const todo = todos.find((t) => t.id === parseInt(id));
+      const todoIndex = todos.indexOf(todo);
+      if (todoIndex !== -1) {
+          todos.splice(todoIndex, 1);
+      }
+      res.json(todos);
   });
 
-  // GET route to update a todo's title by id
+  app.delete("/lab5/todos/:id", (req, res) => {
+      const { id } = req.params;
+      const todoIndex = todos.findIndex((t) => t.id === parseInt(id));
+      if (todoIndex !== -1) {
+          todos.splice(todoIndex, 1);
+      }
+      res.sendStatus(200);
+  });
+
   app.get("/lab5/todos/:id/title/:title", (req, res) => {
-    const { id, title } = req.params;
-    const todo = todos.find((t) => t.id === parseInt(id));
-    todo.title = title;
-    res.json(todos);
+      const { id, title } = req.params;
+      const todo = todos.find((t) => t.id === parseInt(id));
+      todo.title = title;
+      res.json(todos);
   });
 
-  // GET route to update a todo's completion status by id
   app.get("/lab5/todos/:id/completed/:completed", (req, res) => {
-    const { id, completed } = req.params;
-    const todo = todos.find((t) => t.id === parseInt(id));
-    todo.completed = completed === "true";
-    res.json(todos);
+      const { id, completed } = req.params;
+      const todo = todos.find((t) => t.id === parseInt(id));
+      todo.completed = completed === "true";
+      res.json(todos);
   });
 
-  // GET route to update a todo's description by id
   app.get("/lab5/todos/:id/description/:description", (req, res) => {
-    const { id, description } = req.params;
-    const todo = todos.find((t) => t.id === parseInt(id));
-    todo.description = description;
-    res.json(todos);
+      const { id, description } = req.params;
+      const todo = todos.find((t) => t.id === parseInt(id));
+      todo.description = description;
+      res.json(todos);
   });
 }

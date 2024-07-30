@@ -1,12 +1,12 @@
 import express from 'express';
-import cors from 'cors'; // Import CORS middleware
+import cors from 'cors'; 
 import Hello from './Hello.js';
 import Lab5 from './Lab5/index.js';
 
 const app = express();
 
-// Use CORS middleware
 app.use(cors());
+app.use(express.json());
 
 Lab5(app);
 Hello(app);

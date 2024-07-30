@@ -7,6 +7,15 @@ let todos = [
   
   export default function WorkingWithArrays(app) {
     app.get("/lab5/todos", (req, res) => {
+      const { completed } = req.query;
+      if (completed !== undefined) {
+        const completedBool = completed === "true";
+        const completedTodos = todos.filter(
+          (t) => t.completed === completedBool
+        );
+        res.json(completedTodos);
+        return;
+      }
       res.json(todos);
     });
   

@@ -1,7 +1,6 @@
 import Database from "../Database/index.js";
 
 export default function CourseRoutes(app) {
-  // Get all courses
   app.get("/api/courses", (req, res) => {
     try {
       const courses = Database.courses;
@@ -12,7 +11,6 @@ export default function CourseRoutes(app) {
     }
   });
 
-  // Create a new course
   app.post("/api/courses", (req, res) => {
     try {
       const course = { ...req.body, _id: new Date().getTime().toString() };
@@ -24,7 +22,6 @@ export default function CourseRoutes(app) {
     }
   });
 
-  // Delete a course
   app.delete("/api/courses/:id", (req, res) => {
     try {
       const { id } = req.params;
@@ -41,7 +38,6 @@ export default function CourseRoutes(app) {
     }
   });
 
-  // Update a course
   app.put("/api/courses/:id", (req, res) => {
     try {
       const { id } = req.params;
@@ -53,8 +49,7 @@ export default function CourseRoutes(app) {
       Database.courses[courseIndex] = { ...Database.courses[courseIndex], ...req.body };
       res.sendStatus(204);
     } catch (error) {
-      console.error("Error updating course:", error.message);
-      res.status(500).send("Error updating course.");
+      console.error;
     }
   });
 }

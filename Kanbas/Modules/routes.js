@@ -1,11 +1,14 @@
 import db from "../Database/index.js";
 
 export default function ModuleRoutes(app) {
+
+  app.get("/api/modules", (req, res) => {
+    res.json(db.modules);
+  });
+
   app.get("/api/courses/:cid/modules", (req, res) => {
     const { cid } = req.params;
-    console.log(`Fetching modules for course ID: ${cid}`); // Log for debugging
     const modules = db.modules.filter((m) => m.course === cid);
-    console.log(`Modules found: ${JSON.stringify(modules)}`); // Log for debugging
     res.json(modules);
   });
 
@@ -20,13 +23,13 @@ export default function ModuleRoutes(app) {
     res.send(newModule);
   });
 
-  app.delete("/api/modules/:mid", (req, res) => {
+  app.delete("/api/modules/:cid", (req, res) => {
     const { mid } = req.params;
     db.modules = db.modules.filter((m) => m._id !== mid);
     res.sendStatus(200);
   });
 
-  app.put("/api/modules/:mid", (req, res) => {
+  app.put("/api/modules/:cid", (req, res) => {
     const { mid } = req.params;
     const moduleIndex = db.modules.findIndex((m) => m._id === mid);
     if (moduleIndex === -1) {

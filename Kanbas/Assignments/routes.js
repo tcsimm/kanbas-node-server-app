@@ -2,9 +2,9 @@ import db from "../Database/index.js";
 
 export default function AssignmentRoutes(app) {
 
-    app.get("/api/assignments", (req, res) => {
-        res.json(db.assignments);
-      });
+  app.get("/api/assignments", (req, res) => {
+    res.json(db.assignments);
+  });
 
   app.post("/api/courses/:cid/assignments", (req, res) => {
     const { cid } = req.params;

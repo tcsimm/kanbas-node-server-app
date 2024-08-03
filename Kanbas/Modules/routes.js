@@ -1,7 +1,6 @@
 import db from "../Database/index.js";
 
 export default function ModuleRoutes(app) {
-
   app.get("/api/modules", (req, res) => {
     res.json(db.modules);
   });
@@ -23,15 +22,15 @@ export default function ModuleRoutes(app) {
     res.send(newModule);
   });
 
-  app.delete("/api/modules/:cid", (req, res) => {
-    const { mid } = req.params;
-    db.modules = db.modules.filter((m) => m._id !== mid);
+  app.delete("/api/modules/:id", (req, res) => {
+    const { id } = req.params;
+    db.modules = db.modules.filter((m) => m._id !== id);
     res.sendStatus(200);
   });
 
-  app.put("/api/modules/:cid", (req, res) => {
-    const { mid } = req.params;
-    const moduleIndex = db.modules.findIndex((m) => m._id === mid);
+  app.put("/api/modules/:id", (req, res) => { 
+    const { id } = req.params;
+    const moduleIndex = db.modules.findIndex((m) => m._id === id);
     if (moduleIndex === -1) {
       return res.status(404).send("Module not found.");
     }

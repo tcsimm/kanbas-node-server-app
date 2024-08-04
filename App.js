@@ -5,12 +5,16 @@ import CourseRoutes from "./Kanbas/Courses/routes.js";
 import ModuleRoutes from "./Kanbas/Modules/routes.js";
 import AssignmentRoutes from "./Kanbas/Assignments/routes.js";
 
+const app = express();
+
 const corsOptions = {
-  origin: 'http://localhost:3000', 
+  origin: [
+    'http://localhost:3000', // local development
+    'https://your-netlify-site.netlify.app' // replace with your actual Netlify URL
+  ],
   optionsSuccessStatus: 200,
 };
 
-const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 CourseRoutes(app);

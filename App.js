@@ -6,13 +6,8 @@ import ModuleRoutes from "./Kanbas/Modules/routes.js";
 import AssignmentRoutes from "./Kanbas/Assignments/routes.js";
 import Hello from "./Hello.js";
 
-const corsOptions = {
-  origin: 'http://localhost:3000', 
-  optionsSuccessStatus: 200,
-};
-
 const app = express();
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 CourseRoutes(app);
 ModuleRoutes(app);

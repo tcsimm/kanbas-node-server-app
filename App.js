@@ -10,7 +10,7 @@ const app = express();
 const corsOptions = {
   origin: [
     'http://localhost:3000', // local development
-    'https://your-netlify-site.netlify.app' // replace with your actual Netlify URL
+    'https://kanbas-node-server-app-en9o.onrender.com' // replace with your actual Netlify URL
   ],
   optionsSuccessStatus: 200,
 };

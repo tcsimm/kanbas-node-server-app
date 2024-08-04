@@ -28,13 +28,13 @@ export default function ModuleRoutes(app) {
     res.sendStatus(200);
   });
 
-  app.put("/api/modules/:id", (req, res) => { 
+  app.put("/api/modules/:id", (req, res) => {
     const { id } = req.params;
     const moduleIndex = db.modules.findIndex((m) => m._id === id);
     if (moduleIndex === -1) {
       return res.status(404).send("Module not found.");
     }
     db.modules[moduleIndex] = { ...db.modules[moduleIndex], ...req.body };
-    res.sendStatus(200);
+    res.send(db.modules[moduleIndex]); // Send the updated module back
   });
 }

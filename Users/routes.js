@@ -55,6 +55,34 @@ export default function UserRoutes(app) {
     }
   };
 
+  const updateUser = async (req, res) => {
+    const { userId } = req.params;
+    const userUpdateData = req.body;
+
+    if (!userId) {
+      console.error('User ID is missing in the request');
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      console.error('Invalid User ID format:', userId);
+      return res.status(400).json({ error: 'Invalid User ID format' });
+    }
+
+    try {
+      const result = await dao.updateUser(userId, userUpdateData);
+      if (result.nModified === 0) {
+        console.error('User not found or no fields updated with ID:', userId);
+        return res.status(404).json({ error: 'User not found or no changes made' });
+      }
+      res.status(200).json({ message: 'User updated successfully' });
+    } catch (error) {
+      console.error('Error updating user:', error);
+      res.status(500).json({ error: 'Failed to update user' });
+    }
+  };
+
   app.get("/api/users", findAllUsers);
   app.get("/api/users/:userId", findUserById);
+  app.put("/api/users/:userId", updateUser); // Add the route for updating users
 }

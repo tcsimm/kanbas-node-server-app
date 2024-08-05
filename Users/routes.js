@@ -5,10 +5,26 @@ let currentUser = null;
 
 export default function UserRoutes(app) {
 
+  // Sign Up Route
+  const signup = async (req, res) => {
+    try {
+      const existingUser = await dao.findUserByUsername(req.body.username);
+      if (existingUser) {
+        return res.status(400).json({ message: "Username already taken" });
+      }
+      const newUser = await dao.createUser(req.body);
+      currentUser = newUser;
+      res.status(201).json(newUser);
+    } catch (error) {
+      console.error('Error signing up:', error);
+      res.status(500).json({ error: 'Error signing up' });
+    }
+  };
+
   // Sign In Route
   const signin = async (req, res) => {
-    const { username, password } = req.body;
     try {
+      const { username, password } = req.body;
       currentUser = await dao.findUserByCredentials(username, password);
       if (!currentUser) {
         return res.status(401).json({ error: 'Invalid credentials' });
@@ -29,7 +45,7 @@ export default function UserRoutes(app) {
     }
   };
 
-  // Create User Route
+  // Create User Route (for admin or initial setup)
   const createUser = async (req, res) => {
     try {
       const user = await dao.createUser(req.body);
@@ -108,6 +124,7 @@ export default function UserRoutes(app) {
   };
 
   // Register routes
+  app.post("/api/users/signup", signup);
   app.post("/api/users/signin", signin);
   app.post("/api/users/profile", profile);
   app.post("/api/users", createUser);

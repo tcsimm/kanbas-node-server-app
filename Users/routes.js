@@ -3,6 +3,16 @@ import * as dao from "./dao.js";
 import mongoose from 'mongoose';
 
 export default function UserRoutes(app) {
+
+    const createUser = async (req, res) => {
+        try {
+          const user = await dao.createUser(req.body);
+          res.status(201).json(user); // Respond with status 201 for resource creation
+        } catch (error) {
+          res.status(500).json({ error: 'Error creating user' });
+        }
+      };
+
   const findAllUsers = async (req, res) => {
     try {
       const { role, name } = req.query;
@@ -84,5 +94,6 @@ export default function UserRoutes(app) {
 
   app.get("/api/users", findAllUsers);
   app.get("/api/users/:userId", findUserById);
-  app.put("/api/users/:userId", updateUser); // Add the route for updating users
+  app.put("/api/users/:userId", updateUser); 
+  app.post("/api/users", createUser);
 }

@@ -20,11 +20,20 @@ export default function UserRoutes(app) {
     }
   };
 
+  // Profile Route
+  const profile = async (req, res) => {
+    if (currentUser) {
+      res.json(currentUser);
+    } else {
+      res.status(401).json({ error: 'User not signed in' });
+    }
+  };
+
   // Create User Route
   const createUser = async (req, res) => {
     try {
       const user = await dao.createUser(req.body);
-      res.status(201).json(user); // Respond with status 201 for resource creation
+      res.status(201).json(user);
     } catch (error) {
       console.error('Error creating user:', error);
       res.status(500).json({ error: 'Error creating user' });
@@ -37,13 +46,10 @@ export default function UserRoutes(app) {
       const { role, name } = req.query;
       let users;
       if (role) {
-        console.log(`Finding users by role: ${role}`);
         users = await dao.findUsersByRole(role);
       } else if (name) {
-        console.log(`Finding users by name: ${name}`);
         users = await dao.findUsersByPartialName(name);
       } else {
-        console.log('Finding all users');
         users = await dao.findAllUsers();
       }
       res.json(users);
@@ -103,6 +109,7 @@ export default function UserRoutes(app) {
 
   // Register routes
   app.post("/api/users/signin", signin);
+  app.post("/api/users/profile", profile);
   app.post("/api/users", createUser);
   app.get("/api/users", findAllUsers);
   app.get("/api/users/:userId", findUserById);

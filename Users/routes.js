@@ -4,8 +4,6 @@ import mongoose from 'mongoose';
 let currentUser = null;
 
 export default function UserRoutes(app) {
-
-  // Sign Up Route
   const signup = async (req, res) => {
     try {
       const existingUser = await dao.findUserByUsername(req.body.username);
@@ -21,7 +19,6 @@ export default function UserRoutes(app) {
     }
   };
 
-  // Sign In Route
   const signin = async (req, res) => {
     try {
       const { username, password } = req.body;
@@ -36,7 +33,11 @@ export default function UserRoutes(app) {
     }
   };
 
-  // Profile Route
+  const signout = (req, res) => {
+    currentUser = null;
+    res.sendStatus(200);
+  };
+
   const profile = async (req, res) => {
     if (currentUser) {
       res.json(currentUser);
@@ -45,7 +46,6 @@ export default function UserRoutes(app) {
     }
   };
 
-  // Create User Route (for admin or initial setup)
   const createUser = async (req, res) => {
     try {
       const user = await dao.createUser(req.body);
@@ -56,7 +56,6 @@ export default function UserRoutes(app) {
     }
   };
 
-  // Find All Users Route
   const findAllUsers = async (req, res) => {
     try {
       const { role, name } = req.query;
@@ -75,7 +74,6 @@ export default function UserRoutes(app) {
     }
   };
 
-  // Find User by ID Route
   const findUserById = async (req, res) => {
     const userId = req.params.userId;
     if (!userId) {
@@ -98,7 +96,6 @@ export default function UserRoutes(app) {
     }
   };
 
-  // Update User Route
   const updateUser = async (req, res) => {
     const { userId } = req.params;
     const userUpdateData = req.body;
@@ -123,9 +120,9 @@ export default function UserRoutes(app) {
     }
   };
 
-  // Register routes
   app.post("/api/users/signup", signup);
   app.post("/api/users/signin", signin);
+  app.post("/api/users/signout", signout);
   app.post("/api/users/profile", profile);
   app.post("/api/users", createUser);
   app.get("/api/users", findAllUsers);

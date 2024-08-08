@@ -1,29 +1,26 @@
 import * as dao from "./dao.js";
 import mongoose from 'mongoose';
 
-// Sign up route
 const signup = async (req, res) => {
   try {
-    // Check if username already exists
+    console.log('Received signup request:', req.body);  // Log the incoming request data
+
     const existingUser = await dao.findUserByUsername(req.body.username);
     if (existingUser) {
       return res.status(400).json({ message: "Username already taken" });
     }
 
-    // Create a new user
     const newUser = await dao.createUser(req.body);
     
-    // Store the new user in the session
     req.session.currentUser = newUser;
 
     res.status(201).json(newUser);
   } catch (error) {
-    console.error('Error signing up:', error);
+    console.error('Error during signup:', error);  // Log the error for debugging
     res.status(500).json({ error: 'Error signing up' });
   }
 };
 
-// Sign in route
 const signin = async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -33,7 +30,6 @@ const signin = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    // Store the user in the session
     req.session.currentUser = user;
     res.json(user);
   } catch (error) {
@@ -42,13 +38,15 @@ const signin = async (req, res) => {
   }
 };
 
-// Sign out route
 const signout = (req, res) => {
-  req.session.destroy(); // Destroy the session
-  res.sendStatus(200);
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ error: 'Failed to sign out' });
+    }
+    res.sendStatus(200);
+  });
 };
 
-// Profile route
 const profile = (req, res) => {
   const currentUser = req.session.currentUser;
   if (!currentUser) {
@@ -57,7 +55,6 @@ const profile = (req, res) => {
   res.json(currentUser);
 };
 
-// Create user route
 const createUser = async (req, res) => {
   try {
     const user = await dao.createUser(req.body);
@@ -68,7 +65,6 @@ const createUser = async (req, res) => {
   }
 };
 
-// Find all users route
 const findAllUsers = async (req, res) => {
   try {
     const { role, name } = req.query;
@@ -89,7 +85,6 @@ const findAllUsers = async (req, res) => {
   }
 };
 
-// Find user by ID route
 const findUserById = async (req, res) => {
   const userId = req.params.userId;
 
@@ -113,7 +108,6 @@ const findUserById = async (req, res) => {
   }
 };
 
-// Update user route
 const updateUser = async (req, res) => {
   const { userId } = req.params;
   const userUpdateData = req.body;
@@ -138,7 +132,6 @@ const updateUser = async (req, res) => {
   }
 };
 
-// Export routes
 export default function UserRoutes(app) {
   app.post("/api/users/signup", signup);
   app.post("/api/users/signin", signin);

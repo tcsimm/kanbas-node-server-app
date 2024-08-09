@@ -1,36 +1,39 @@
-import Database from "../Database/index.js";
+import express from "express";
+import * as courseDao from "./dao.js"; // Import the course DAO
 
 export default function CourseRoutes(app) {
-  app.get("/api/courses", (req, res) => {
+  // GET all courses
+  app.get("/api/courses", async (req, res) => {
     try {
-      const courses = Database.courses;
-      res.send(courses);
+      const courses = await courseDao.findAllCourses(); // Fetch all courses from the database
+      res.json(courses);
     } catch (error) {
       console.error("Error fetching courses:", error.message);
       res.status(500).send("Error fetching courses.");
     }
   });
 
-  app.post("/api/courses", (req, res) => {
+  // POST create a new course
+  app.post("/api/courses", async (req, res) => {
     try {
-      const course = { ...req.body, _id: new Date().getTime().toString() };
-      Database.courses.push(course);
-      res.send(course);
+      const course = { ...req.body, _id: req.body._id || new Date().getTime().toString() };
+      const newCourse = await courseDao.createCourse(course); // Create a new course in the database
+      res.json(newCourse);
     } catch (error) {
       console.error("Error creating course:", error.message);
       res.status(500).send("Error creating course.");
     }
   });
 
-  app.delete("/api/courses/:id", (req, res) => {
+  // DELETE a course by ID
+  app.delete("/api/courses/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const courseIndex = Database.courses.findIndex((course) => course._id === id);
-      if (courseIndex === -1) {
+      const result = await courseDao.deleteCourse(id); // Delete the course from the database
+      if (result.deletedCount === 0) {
         res.status(404).json({ message: `Unable to delete course with ID ${id}` });
         return;
       }
-      Database.courses.splice(courseIndex, 1);
       res.sendStatus(204);
     } catch (error) {
       console.error("Error deleting course:", error.message);
@@ -38,18 +41,19 @@ export default function CourseRoutes(app) {
     }
   });
 
-  app.put("/api/courses/:id", (req, res) => {
+  // PUT update a course by ID
+  app.put("/api/courses/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const courseIndex = Database.courses.findIndex((course) => course._id === id);
-      if (courseIndex === -1) {
+      const result = await courseDao.updateCourse(id, req.body); // Update the course in the database
+      if (result.nModified === 0) {
         res.status(404).json({ message: `Unable to update course with ID ${id}` });
         return;
       }
-      Database.courses[courseIndex] = { ...Database.courses[courseIndex], ...req.body };
       res.sendStatus(204);
     } catch (error) {
-      console.error;
+      console.error("Error updating course:", error.message);
+      res.status(500).send("Error updating course.");
     }
   });
 }

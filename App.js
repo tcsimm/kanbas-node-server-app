@@ -1,4 +1,4 @@
-import "dotenv/config"; // Import dotenv to load environment variables
+import "dotenv/config"; 
 import express from "express";
 import cors from "cors";
 import session from "express-session";
@@ -10,7 +10,6 @@ import ModuleRoutes from "./Kanbas/Modules/routes.js";
 import AssignmentRoutes from "./Kanbas/Assignments/routes.js";
 import Hello from "./Hello.js";
 import UserRoutes from "./Users/routes.js";
-import connectMongo from 'connect-mongo';
 
 const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas";
 mongoose.connect(CONNECTION_STRING, {
@@ -56,7 +55,7 @@ if (process.env.NODE_ENV !== "development") {
     ...sessionOptions.cookie,
     sameSite: "none",
     secure: true,
-    domain: process.env.NODE_SERVER_DOMAIN, // Replace with actual domain in production
+    domain: process.env.NODE_SERVER_DOMAIN, 
   };
 }
 

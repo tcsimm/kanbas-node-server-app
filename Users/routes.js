@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 const signup = async (req, res) => {
   try {
-    console.log('Received signup request:', req.body);  // Log the incoming request data
+    console.log('Received signup request:', req.body);  
 
     const existingUser = await dao.findUserByUsername(req.body.username);
     if (existingUser) {
@@ -16,7 +16,7 @@ const signup = async (req, res) => {
 
     res.status(201).json(newUser);
   } catch (error) {
-    console.error('Error during signup:', error);  // Log the error for debugging
+    console.error('Error during signup:', error);  
     res.status(500).json({ error: 'Error signing up' });
   }
 };

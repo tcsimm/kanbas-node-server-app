@@ -1,11 +1,10 @@
 import express from "express";
-import * as courseDao from "./dao.js"; // Import the course DAO
+import * as courseDao from "./dao.js"; 
 
 export default function CourseRoutes(app) {
-  // GET all courses
   app.get("/api/courses", async (req, res) => {
     try {
-      const courses = await courseDao.findAllCourses(); // Fetch all courses from the database
+      const courses = await courseDao.findAllCourses(); 
       res.json(courses);
     } catch (error) {
       console.error("Error fetching courses:", error.message);
@@ -13,11 +12,10 @@ export default function CourseRoutes(app) {
     }
   });
 
-  // POST create a new course
   app.post("/api/courses", async (req, res) => {
     try {
       const course = { ...req.body, _id: req.body._id || new Date().getTime().toString() };
-      const newCourse = await courseDao.createCourse(course); // Create a new course in the database
+      const newCourse = await courseDao.createCourse(course); 
       res.json(newCourse);
     } catch (error) {
       console.error("Error creating course:", error.message);
@@ -25,11 +23,10 @@ export default function CourseRoutes(app) {
     }
   });
 
-  // DELETE a course by ID
   app.delete("/api/courses/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const result = await courseDao.deleteCourse(id); // Delete the course from the database
+      const result = await courseDao.deleteCourse(id); 
       if (result.deletedCount === 0) {
         res.status(404).json({ message: `Unable to delete course with ID ${id}` });
         return;
@@ -41,11 +38,10 @@ export default function CourseRoutes(app) {
     }
   });
 
-  // PUT update a course by ID
   app.put("/api/courses/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const result = await courseDao.updateCourse(id, req.body); // Update the course in the database
+      const result = await courseDao.updateCourse(id, req.body); 
       if (result.nModified === 0) {
         res.status(404).json({ message: `Unable to update course with ID ${id}` });
         return;

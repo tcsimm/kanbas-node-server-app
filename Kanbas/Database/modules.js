@@ -1,4 +1,4 @@
-export default[
+export default [ 
   {
     "_id": "module1",
     "course": "RS101",
@@ -1078,5 +1078,5 @@ export default[
       { "name": "Engineering Techniques" },
       { "name": "Modern Applications" }
     ]
-  }
+  } 
 ]

@@ -12,10 +12,7 @@ import Hello from "./Hello.js";
 import UserRoutes from "./Users/routes.js";
 
 const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas";
-mongoose.connect(CONNECTION_STRING, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(CONNECTION_STRING)
 
 mongoose.connection.on("connected", () => {
   console.log("Connected to MongoDB database");
@@ -28,8 +25,8 @@ mongoose.connection.on("error", (err) => {
 const app = express();
 
 const corsOptions = {
-  origin: process.env.NETLIFY_URL || "http://localhost:3000",  // Replace with your Netlify URL
-  credentials: true,  // Allow credentials (cookies, authorization headers, etc.)
+  origin: process.env.NETLIFY_URL || "http://localhost:3000", 
+  credentials: true, 
 };
 
 app.use(cors(corsOptions));
@@ -39,23 +36,15 @@ const sessionOptions = {
   secret: process.env.SESSION_SECRET || "kanbas",
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create({
-    mongoUrl: CONNECTION_STRING,
-    collectionName: "sessions",
-  }),
-  cookie: {
-    maxAge: 24 * 60 * 60 * 1000,  // 1 day
-  },
 };
-
 if (process.env.NODE_ENV !== "development") {
-  sessionOptions.proxy = true; 
+  sessionOptions.proxy = true;
   sessionOptions.cookie = {
     sameSite: "none",
     secure: true,
+    domain: process.env.NODE_SERVER_DOMAIN,
   };
 }
-
 app.use(session(sessionOptions));
 
 CourseRoutes(app);

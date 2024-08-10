@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
 const moduleSchema = new mongoose.Schema({
-  _id: { type: String, required: true }, // ID for the module
-  course: { type: String, required: true }, // ID of the associated course
-  name: { type: String, required: true }, // Name of the module
+  _id: { type: String, required: true }, 
+  course: { type: String, required: true }, 
+  name: { type: String, required: true }, 
   lessons: [
     {
-      name: { type: String, required: true }, // Name of each lesson
+      name: { type: String, required: true },
     },
   ],
 }, 

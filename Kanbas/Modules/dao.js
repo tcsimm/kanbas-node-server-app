@@ -5,7 +5,7 @@ export const findAllModules = () => ModuleModel.find();
 
 export const findModuleById = (moduleId) => ModuleModel.findById(moduleId);
 
-export const findModulesByCourseId = (courseId) => ModuleModel.find({ course: courseId });  // Adjusted the field name
+export const findModulesByCourseId = (courseId) => ModuleModel.find({ course: courseId });  
 
 export const createModule = async (moduleData) => {
     try {

@@ -27,14 +27,13 @@ mongoose.connection.on("error", (err) => {
 
 const app = express();
 
-app.use(
-  cors({
-    credentials: true,
-    origin: process.env.NETLIFY_URL || "http://localhost:3000",
-  })
-);
+const corsOptions = {
+  origin: process.env.NETLIFY_URL || "http://localhost:3000",  // Replace with your Netlify URL
+  credentials: true,  // Allow credentials (cookies, authorization headers, etc.)
+};
 
-app.use(express.json())
+app.use(cors(corsOptions));
+app.use(express.json());
 
 const sessionOptions = {
   secret: process.env.SESSION_SECRET || "kanbas",
@@ -45,17 +44,15 @@ const sessionOptions = {
     collectionName: "sessions",
   }),
   cookie: {
-    maxAge: 24 * 60 * 60 * 1000, 
+    maxAge: 24 * 60 * 60 * 1000,  // 1 day
   },
 };
 
 if (process.env.NODE_ENV !== "development") {
   sessionOptions.proxy = true; 
   sessionOptions.cookie = {
-    ...sessionOptions.cookie,
     sameSite: "none",
     secure: true,
-    domain: process.env.NODE_SERVER_DOMAIN, 
   };
 }
 

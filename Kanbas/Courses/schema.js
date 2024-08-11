@@ -9,7 +9,7 @@ const courseSchema = new mongoose.Schema({
   department: { type: String, required: false },
   credits: { type: Number, required: false },
   description: { type: String, required: true },
-  image: { type: String, required: false } // Path or URL to the course image
+  image: { type: String, required: false } 
 }, 
 { collection: "courses" });
 

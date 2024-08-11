@@ -3,13 +3,7 @@ import ModuleModel from "./model.js";
 export default function ModuleRoutes(app) {
   
   app.get("/api/modules", async (req, res) => {
-    try {
-      const modules = await ModuleModel.find(); 
-      res.json(modules);
-    } catch (error) {
-      console.error("Error fetching modules:", error.message);
-      res.status(500).send({ error: "Error fetching modules." });
-    }
+    res.json(db.modules);
   });
 
   app.get("/api/courses/:cid/modules", async (req, res) => {

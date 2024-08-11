@@ -1,4 +1,3 @@
-import express from "express";
 import * as courseDao from "./dao.js"; 
 
 export default function CourseRoutes(app) {

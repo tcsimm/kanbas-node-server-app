@@ -2,7 +2,6 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import session from "express-session";
-import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import Lab5 from "./Lab5/index.js";
 import CourseRoutes from "./Kanbas/Courses/routes.js";
@@ -11,16 +10,8 @@ import AssignmentRoutes from "./Kanbas/Assignments/routes.js";
 import Hello from "./Hello.js";
 import UserRoutes from "./Users/routes.js";
 
-const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb+srv://giuseppi:supersecretpassword@cluster61813.8x0vzqi.mongodb.net";
+const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas"
 mongoose.connect(CONNECTION_STRING)
-
-mongoose.connection.on("connected", () => {
-  console.log("Connected to MongoDB database");
-});
-
-mongoose.connection.on("error", (err) => {
-  console.error("Failed to connect to MongoDB database", err);
-});
 
 const app = express();
 

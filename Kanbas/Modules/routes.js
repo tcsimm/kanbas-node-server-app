@@ -1,11 +1,10 @@
-import ModuleModel from "./model.js";  // Ensure this path is correct
+import ModuleModel from "./model.js";  
 
 export default function ModuleRoutes(app) {
   
-  // Fetch all modules
   app.get("/api/modules", async (req, res) => {
     try {
-      const modules = await ModuleModel.find(); // fetch modules from MongoDB
+      const modules = await ModuleModel.find(); 
       res.json(modules);
     } catch (error) {
       console.error("Error fetching modules:", error.message);
@@ -13,7 +12,6 @@ export default function ModuleRoutes(app) {
     }
   });
 
-  // Fetch modules by course ID
   app.get("/api/courses/:cid/modules", async (req, res) => {
     try {
       const { cid } = req.params;
@@ -44,8 +42,6 @@ export default function ModuleRoutes(app) {
     }
   });
   
-
-  // Delete a module by ID
   app.delete("/api/modules/:id", async (req, res) => {
     try {
       const { id } = req.params;
@@ -53,14 +49,13 @@ export default function ModuleRoutes(app) {
       if (result.deletedCount === 0) {
         return res.status(404).send({ error: "Module not found." });
       }
-      res.sendStatus(204);  // 204 No Content
+      res.sendStatus(204);  
     } catch (error) {
       console.error("Error deleting module:", error.message);
       res.status(500).send({ error: "Error deleting module." });
     }
   });
 
-  // Update a module by ID
   app.put("/api/modules/:id", async (req, res) => {
     try {
       const { id } = req.params;

@@ -48,11 +48,10 @@ const signout = (req, res) => {
 };
 
 const profile = (req, res) => {
-  const currentUser = req.session.currentUser;
-  if (!currentUser) {
+  if (!req.session || !req.session.currentUser) {
     return res.status(401).json({ error: 'User not signed in' });
   }
-  res.json(currentUser);
+  res.json(req.session.currentUser);
 };
 
 const createUser = async (req, res) => {
@@ -122,7 +121,7 @@ const updateUser = async (req, res) => {
 
   try {
     const result = await dao.updateUser(userId, userUpdateData);
-    if (result.nModified === 0) {
+    if (result.nModified === 0 && result.modifiedCount === 0) {
       return res.status(404).json({ error: 'User not found or no changes made' });
     }
     res.status(200).json({ message: 'User updated successfully' });
@@ -133,8 +132,16 @@ const updateUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-  const status = await dao.deleteUser(req.params.userId);
-  res.json(status);
+  try {
+    const result = await dao.deleteUser(req.params.userId);
+    if (result.deletedCount === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.sendStatus(204);
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'Failed to delete user' });
+  }
 };
 
 export default function UserRoutes(app) {

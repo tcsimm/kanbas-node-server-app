@@ -7,9 +7,10 @@ export const findModuleById = (moduleId) => ModuleModel.findById(moduleId);
 
 export const findModulesByCourseId = (courseId) => ModuleModel.find({ course: courseId });  
 
-export const createModule = async (moduleData) => {
+// Create a new module
+export const createModule = async (courseId, moduleData) => {
     try {
-      const response = await axios.post('/api/courses/RS101/modules', moduleData, {
+      const response = await axios.post(`/api/courses/${courseId}/modules`, moduleData, {
         headers: {
           'Content-Type': 'application/json',
         },

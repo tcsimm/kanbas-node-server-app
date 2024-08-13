@@ -48,14 +48,7 @@ const signout = (req, res) => {
 };
 
 const profile = (req, res) => {
-  console.log('Session ID:', req.sessionID);
-  console.log('Session Data:', req.session);
-  
-  if (!req.session || !req.session.currentUser) {
-    return res.status(401).json({ error: 'User not signed in' });
-  }
-  
-  res.json(req.session.currentUser);
+  res.json(currentUser);
 };
 
 const createUser = async (req, res) => {

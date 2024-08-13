@@ -25,8 +25,6 @@ mongoose.connect(CONNECTION_STRING, {
 
 const app = express();
 
-app.set('trust proxy', 1);
-
 const allowedOrigins = [
   "https://dazzling-frangipane-2ff9c3.netlify.app", 
   "http://localhost:3000", 
@@ -52,8 +50,8 @@ const sessionOptions = {
   resave: false,
   saveUninitialized: false,
   cookie: {
-    sameSite: "None",  // Allows cross-domain cookies
-    secure: true,  // Ensures cookies are sent over HTTPS
+    sameSite: "lax", 
+    secure: process.env.NODE_ENV === "production", 
   },
 };
 

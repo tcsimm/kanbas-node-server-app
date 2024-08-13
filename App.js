@@ -14,7 +14,7 @@ const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.
 mongoose.connect(CONNECTION_STRING, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true,
+  useCreateIndex: true
 })
   .then(() => {
     console.log('Connected to MongoDB');
@@ -25,9 +25,21 @@ mongoose.connect(CONNECTION_STRING, {
 
 const app = express();
 
+const allowedOrigins = [
+  "https://dazzling-frangipane-2ff9c3.netlify.app", // Netlify site URL
+  "http://localhost:3000", // Local development URL
+];
+
 const corsOptions = {
-  origin: process.env.NETLIFY_URL || "http://localhost:3000",
-  credentials: true, 
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
 };
 
 app.use(cors(corsOptions));

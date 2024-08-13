@@ -31,13 +31,14 @@ const allowedOrigins = [
 ];
 
 const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: "https://dazzling-frangipane-2ff9c3.netlify.app", 
+  // (origin, callback) => {
+  //   if (!origin || allowedOrigins.includes(origin)) {
+  //     callback(null, true);
+  //   } else {
+  //     callback(new Error('Not allowed by CORS'));
+  //   }
+  // },
   credentials: true, 
 };
 
@@ -49,9 +50,11 @@ const sessionOptions = {
   secret: process.env.SESSION_SECRET || "kanbas",
   resave: false,
   saveUninitialized: false,
+  proxy: true,
   cookie: {
-    sameSite: "lax", 
-    secure: process.env.NODE_ENV === "production", 
+    sameSite: "none", 
+    secure: true,//process.env.NODE_ENV === "production", 
+    domain: "a6-xjm6.onrender.com"
   },
 };
 

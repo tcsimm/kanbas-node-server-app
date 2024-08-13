@@ -14,7 +14,7 @@ const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.
 mongoose.connect(CONNECTION_STRING, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true,
+  useCreateIndex: true
 })
   .then(() => {
     console.log('Connected to MongoDB');
@@ -42,6 +42,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+
 app.use(express.json());
 
 const sessionOptions = {
@@ -49,10 +50,8 @@ const sessionOptions = {
   resave: false,
   saveUninitialized: false,
   cookie: {
-    sameSite: "None", 
+    sameSite: "lax", 
     secure: process.env.NODE_ENV === "production", 
-    httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 24 * 7, 
   },
 };
 

@@ -32,8 +32,7 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -52,7 +51,7 @@ const sessionOptions = {
   saveUninitialized: false,
   cookie: {
     sameSite: "lax", 
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === "production", 
   },
 };
 

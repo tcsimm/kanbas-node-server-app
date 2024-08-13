@@ -26,8 +26,8 @@ mongoose.connect(CONNECTION_STRING, {
 const app = express();
 
 const allowedOrigins = [
-  "https://dazzling-frangipane-2ff9c3.netlify.app", // Netlify site URL
-  "http://localhost:3000", // Local development URL
+  "https://dazzling-frangipane-2ff9c3.netlify.app", 
+  "http://localhost:3000", 
 ];
 
 const corsOptions = {
@@ -39,7 +39,7 @@ const corsOptions = {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  credentials: true, 
 };
 
 app.use(cors(corsOptions));

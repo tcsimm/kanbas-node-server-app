@@ -58,6 +58,7 @@ const profile = (req, res) => {
   res.json(req.session.currentUser);
 };
 
+
 const createUser = async (req, res) => {
   try {
     const user = await dao.createUser(req.body);
